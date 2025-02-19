@@ -1,7 +1,7 @@
 import "../styles/CreateListing.scss";
 import Navbar from "../components/Navbar";
 import { categories, types, facilities } from "../data";
-
+import API_URL from "../api";
 import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
 import variables from "../styles/variables.scss";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -128,7 +128,7 @@ const CreateListing = () => {
       });
 
       /* Send a POST request to server */
-      const response = await fetch("http://localhost:3001/properties/create", {
+      const response = await fetch(`${API_URL}/properties/create`, {
         method: "POST",
         body: listingForm,
       });

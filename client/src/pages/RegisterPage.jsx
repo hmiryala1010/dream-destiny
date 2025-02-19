@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import "../styles/Register.scss";
+import API_URL from "../api";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -39,13 +40,18 @@ const RegisterPage = () => {
         register_form.append(key, formData[key])
       }
 
-      const response = await fetch("http://localhost:3001/auth/register", {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         body: register_form
       })
 
       if (response.ok) {
         navigate("/login")
+      }
+      if (response.status === 409) {
+        console.log("Conflict: User already exists");
+        alert("User with this email already exists. Please log in.");
+        return;
       }
     } catch (err) {
       console.log("Registration failed", err.message)
