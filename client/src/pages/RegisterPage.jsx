@@ -84,14 +84,14 @@ const RegisterPage = () => {
       <div className="register_content">
         <form className="register_content_form" onSubmit={handleSubmit}>
           <input
-            placeholder="First Name"
+            placeholder="Enter First Name"
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
             required
           />
           <input
-            placeholder="Last Name"
+            placeholder="Enter Last Name"
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
