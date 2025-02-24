@@ -1,25 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { categories } from "../data";
 import "../styles/Listings.scss";
 import ListingCard from "./ListingCard";
 import Loader from "./Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { setListings } from "../redux/state";
-
+import API_URL from "../api";
 const Listings = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const listings = useSelector((state) => state.listings);
 
-  const getFeedListings = async () => {
+  const getFeedListings = useCallback(async () => {
     try {
       const response = await fetch(
         selectedCategory !== "All"
-          ? `http://localhost:3001/properties?category=${selectedCategory}`
-          : "http://localhost:3001/properties",
+          ? `${API_URL}/properties?category=${selectedCategory}`
+          : `${API_URL}/properties`,
         {
           method: "GET",
         }
@@ -31,11 +30,11 @@ const Listings = () => {
     } catch (err) {
       console.log("Fetch Listings Failed", err.message);
     }
-  };
+  }, [dispatch, selectedCategory]);
 
   useEffect(() => {
     getFeedListings();
-  }, [selectedCategory]);
+  }, [getFeedListings]);
 
   return (
     <>
@@ -67,9 +66,10 @@ const Listings = () => {
               category,
               type,
               price,
-              booking=false
+              booking = false,
             }) => (
               <ListingCard
+                key={_id} // Added key to avoid React warning
                 listingId={_id}
                 creator={creator}
                 listingPhotoPaths={listingPhotoPaths}

@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setWishList } from "../redux/state";
-
+import API_URL from "../api";
 const ListingCard = ({
   listingId,
   creator,
@@ -49,18 +49,18 @@ const ListingCard = ({
 
   const patchWishList = async () => {
     if (user?._id !== creator._id) {
-    const response = await fetch(
-      `http://localhost:3001/users/${user?._id}/${listingId}`,
-      {
-        method: "PATCH",
-        header: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    dispatch(setWishList(data.wishList));
-  } else { return }
+      const response = await fetch(
+        `${API_URL}/users/${user?._id}/${listingId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      dispatch(setWishList(data.wishList));
+    }
   };
 
   return (
@@ -77,15 +77,16 @@ const ListingCard = ({
         >
           {listingPhotoPaths?.map((photo, index) => (
             <div key={index} className="slide">
-              <img
-                src={`http://localhost:3001/${photo?.replace("public", "")}`}
-                alt={`photo ${index + 1}`}
-              />
+             <img
+  src={`${API_URL}/${photo?.replace("public", "")}`}
+  alt={city ? `Property in ${city}, ${province}` : "Property listing"} 
+/>
+
               <div
                 className="prev-button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  goToPrevSlide(e);
+                  goToPrevSlide();
                 }}
               >
                 <ArrowBackIosNew sx={{ fontSize: "15px" }} />
@@ -94,7 +95,7 @@ const ListingCard = ({
                 className="next-button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  goToNextSlide(e);
+                  goToNextSlide();
                 }}
               >
                 <ArrowForwardIos sx={{ fontSize: "15px" }} />
