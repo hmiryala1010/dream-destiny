@@ -2,6 +2,9 @@
 @import "./breakpoints.scss";
 
 .listing-details {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   padding: 40px 130px 120px;
 
   @include xl {
@@ -18,7 +21,7 @@
 
   .title {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
     @include sm {
@@ -50,6 +53,7 @@
   .photos {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
     margin: 20px 0;
 
@@ -81,6 +85,7 @@
 
   .booking {
     display: flex;
+    align-items: center;
     justify-content: space-between;
 
     @include lg {
@@ -118,6 +123,10 @@
     }
 
     .date-range-calendar {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       margin: 30px 0;
 
       h2 {

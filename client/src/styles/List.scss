@@ -5,6 +5,8 @@
 .title-list {
   margin: 40px 100px;
   color: $blue;
+  display: flex;
+  justify-content: center;
 
   @include sm {
     margin: 40px 50px;

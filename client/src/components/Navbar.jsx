@@ -1,7 +1,7 @@
 import { IconButton } from "@mui/material";
 import { Search, Person, Menu } from "@mui/icons-material";
 import variables from "../styles/variables.scss";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "../styles/Navbar.scss";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,6 +19,22 @@ const Navbar = () => {
   const [search, setSearch] = useState("")
 
   const navigate = useNavigate()
+
+  const menuRef = useRef(null); // Reference for dropdown menu
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setDropdownMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="navbar">
@@ -69,29 +85,30 @@ const Navbar = () => {
           )}
         </button>
 
-        {dropdownMenu && !user && (
-          <div className="navbar_right_accountmenu">
-            <Link to="/login">Log In</Link>
-            <Link to="/register">Sign Up</Link>
-          </div>
-        )}
-
-        {dropdownMenu && user && (
-          <div className="navbar_right_accountmenu">
-            <Link to={`/${user._id}/trips`}>Trip List</Link>
-            <Link to={`/${user._id}/wishList`}>Wish List</Link>
-            <Link to={`/${user._id}/properties`}>Property List</Link>
-            <Link to={`/${user._id}/reservations`}>Reservation List</Link>
-            <Link to="/create-listing">Become A Host</Link>
-
-            <Link
-              to="/login"
-              onClick={() => {
-                dispatch(setLogout());
-              }}
-            >
-              Log Out
-            </Link>
+        {dropdownMenu && (
+          <div className="navbar_right_accountmenu" ref={menuRef}>
+            {!user ? (
+              <>
+                <Link to="/login">Log In</Link>
+                <Link to="/register">Sign Up</Link>
+              </>
+            ) : (
+              <>
+                <Link to={`/${user._id}/trips`}>Trip List</Link>
+                <Link to={`/${user._id}/wishList`}>Wish List</Link>
+                <Link to={`/${user._id}/properties`}>Property List</Link>
+                <Link to={`/${user._id}/reservations`}>Reservation List</Link>
+                <Link to="/create-listing">Become A Host</Link>
+                <Link
+                  to="/login"
+                  onClick={() => {
+                    dispatch(setLogout());
+                  }}
+                >
+                  Log Out
+                </Link>
+              </>
+            )}
           </div>
         )}
       </div>
