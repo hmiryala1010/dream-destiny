@@ -86,6 +86,7 @@
   .booking {
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: space-between;
 
     @include lg {
